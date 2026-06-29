@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  /* ---- White theme tokens ---- */
+  :root {
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f6f7f9;
+    --color-background-tertiary: #eef0f3;
+
+    --color-text-primary: #1a1d21;
+    --color-text-secondary: #6b7280;
+
+    --color-border-tertiary: #e7e9ee;
+    --color-border-secondary: #cfd3da;
+
+    --accent: #1D9E75;
+    --accent-soft: #E1F5EE;
+    --accent-deep: #0F6E56;
+
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+    --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.06), 0 2px 4px rgba(16, 24, 40, 0.04);
+    --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+  body {
+    font-family: var(--font-sans);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #f3faf7 0%, rgba(243, 250, 247, 0) 60%),
+      #fbfbfc;
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    padding: 40px 16px 64px;
+    line-height: 1.45;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  h2.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+  /* ---- Header card ---- */
+  .header {
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 28px 28px 24px;
+    margin-bottom: 24px;
+  }
+  .title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .title-mark {
+    width: 36px; height: 36px; border-radius: 11px; flex-shrink: 0;
+    background: linear-gradient(135deg, #25b487, var(--accent));
+    box-shadow: 0 4px 10px rgba(29, 158, 117, 0.35);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 18px;
+  }
+  .title { font-size: 22px; font-weight: 650; letter-spacing: -0.02em; }
+  .subtitle { font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 20px; }
+
+  .progress-bar-wrap {
+    background: var(--color-background-secondary);
+    border-radius: 99px; height: 12px; overflow: hidden;
+    border: 1px solid var(--color-border-tertiary);
+  }
+  .progress-bar-fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, #25b487, var(--accent));
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+  }
+  .progress-bar-fill::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+    opacity: 0; animation: shimmer 2.2s ease-in-out infinite;
+  }
+  @keyframes shimmer { 0% { transform: translateX(-100%); opacity: 0; } 40% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+  .progress-label { font-size: 13px; color: var(--color-text-secondary); margin-top: 10px; display: flex; justify-content: space-between; align-items: baseline; }
+  .progress-label #global-pct { font-size: 15px; font-weight: 650; color: var(--color-text-primary); }
+
+  /* ---- Stages ---- */
+  .stages { display: flex; flex-direction: column; gap: 12px; }
+
+  .stage-card {
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .stage-card:hover { box-shadow: var(--shadow-md); border-color: #dde0e6; }
+  .stage-header { display: flex; align-items: center; gap: 14px; padding: 16px 18px; cursor: pointer; user-select: none; }
+  .stage-header:hover { background: var(--color-background-secondary); }
+  .stage-badge {
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 99px;
+    background: var(--color-background-secondary); color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-tertiary); white-space: nowrap; letter-spacing: 0.01em;
+    transition: all 0.2s ease;
+  }
+  .stage-badge.done { background: var(--accent-soft); color: var(--accent-deep); border-color: #9fdcc6; }
+  .stage-title { font-size: 15.5px; font-weight: 600; flex: 1; letter-spacing: -0.01em; }
+  .stage-progress-text { font-size: 12px; font-weight: 600; color: var(--color-text-secondary); min-width: 32px; text-align: right; }
+  .stage-mini-bar { width: 64px; height: 5px; background: var(--color-background-secondary); border-radius: 99px; overflow: hidden; }
+  .stage-mini-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #25b487, var(--accent)); transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .chevron { font-size: 12px; color: var(--color-text-secondary); transition: transform 0.25s ease; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .stage-body { border-top: 1px solid var(--color-border-tertiary); padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ---- Topics ---- */
+  .topic { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); overflow: hidden; transition: border-color 0.2s ease; }
+  .topic:hover { border-color: #dde0e6; }
+  .topic-header { display: flex; align-items: center; gap: 12px; padding: 11px 13px; cursor: pointer; }
+  .topic-header:hover { background: var(--color-background-tertiary); }
+  .topic-check { width: 19px; height: 19px; border-radius: 6px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s ease; }
+  .topic-check:hover { border-color: var(--accent); }
+  .topic-check.checked { background: var(--accent); border-color: var(--accent); }
+  .topic-check.partial { background: var(--color-background-primary); border-color: var(--accent); }
+  .topic-check svg { display: none; }
+  .topic-check.checked svg { display: block; }
+  .topic-check.partial::after { content: ''; width: 9px; height: 9px; border-radius: 2px; background: var(--accent); }
+  .topic-name { font-size: 14px; font-weight: 600; flex: 1; letter-spacing: -0.01em; }
+  .topic-count { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); padding: 2px 8px; border-radius: 99px; }
+
+  .subtopics { padding: 2px 13px 12px 44px; display: flex; flex-direction: column; gap: 4px; animation: fadeIn 0.2s ease; }
+  .subtopic { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 5px 8px; border-radius: 7px; transition: background 0.12s ease; }
+  .subtopic:hover { background: var(--color-background-tertiary); }
+  .sub-check { width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s ease; }
+  .subtopic:hover .sub-check { border-color: var(--accent); }
+  .sub-check.checked { background: var(--accent); border-color: var(--accent); }
+  .sub-check svg { display: none; }
+  .sub-check.checked svg { display: block; }
+  .sub-label { font-size: 13px; color: var(--color-text-secondary); transition: color 0.15s ease; }
+  .sub-label.checked { color: var(--color-text-secondary); text-decoration: line-through; opacity: 0.55; }
+
+  @media (max-width: 560px) {
+    body { padding: 24px 12px 48px; }
+    .header { padding: 22px 18px 20px; }
+    .title { font-size: 19px; }
+    .stage-progress-text { display: none; }
+  }
+</style>
+</head>
+<body>
+<h2 class="sr-only">Parth's master learning roadmap with progress tracking across 13 stages</h2>
+
+<div class="container">
+  <div class="header">
+    <div class="title-row">
+      <div class="title-mark">◆</div>
+      <div class="title">Parth's Master Roadmap</div>
+    </div>
+    <div class="subtitle">My progress Across all stages</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="global-fill" style="width:0%"></div></div>
+    <div class="progress-label"><span id="global-text">0 of 0 subtopics done</span><span id="global-pct">0%</span></div>
+  </div>
+
+  <div class="stages" id="stages-root"></div>
+</div>
+
+<script>
+const ROADMAP = [
+  { id: 1, title: "JavaScript - the real thing", topics: [
+    { id: "1a", name: "Core language", subs: ["Variables, types, scope", "Closures & lexical scope", "Prototypes & inheritance", "ES6+ features (destructuring, spread, optional chaining)", "Modules (import/export, CommonJS)"] },
+    { id: "1b", name: "Async JS", subs: ["Callbacks & callback hell", "Promises", "async/await", "Event loop & call stack", "Error handling in async code"] },
+    { id: "1c", name: "Node.js basics", subs: ["How Node works (V8, libuv)", "File system (fs module)", "HTTP module from scratch", "Streams & buffers", "Process & environment"] },
+    { id: "1d", name: "Project: CLI tool", subs: ["Build a real CLI in pure Node.js", "Argument parsing manually", "Read/write files", "Make it do something you actually use"] }
+  ]},
+  { id: 2, title: "TypeScript", topics: [
+    { id: "2a", name: "Type system", subs: ["Basic types, interfaces, type aliases", "Union, intersection, literal types", "Generics", "Utility types (Partial, Pick, Omit etc.)", "Type narrowing & guards"] },
+    { id: "2b", name: "TypeScript in practice", subs: ["tsconfig.json deep dive", "Compilation & declaration files", "TS with Node.js", "Strict mode"] },
+    { id: "2c", name: "Project: Rewrite CLI in TS", subs: ["Convert Stage 1 CLI to TypeScript", "Add proper types everywhere", "Handle errors with typed throws"] }
+  ]},
+  { id: 3, title: "Backend — Node.js + Express", topics: [
+    { id: "3a", name: "HTTP & REST", subs: ["HTTP methods, status codes, headers", "REST principles", "Building routes in Express", "Middleware pattern", "Error handling middleware"] },
+    { id: "3b", name: "Auth", subs: ["JWT from scratch", "Sessions & cookies", "bcrypt for passwords", "Refresh tokens", "Role-based access"] },
+    { id: "3c", name: "PostgreSQL", subs: ["SQL fundamentals (SELECT, JOIN, GROUP BY)", "Schema design & normalization", "Indexes & query optimization", "Transactions", "pg library in Node.js"] },
+    { id: "3e", name: "Realtime, jobs & logging", subs: ["WebSockets server (ws library)", "Background jobs & cron", "Structured logs & log levels"] },
+    { id: "3f", name: "Databases beyond Postgres", subs: ["ORMs (Prisma/Drizzle)", "Database migrations", "NoSQL (MongoDB)", "Redis as a primary store", "Choosing the right database"] },
+    { id: "3g", name: "API paradigms beyond REST", subs: ["GraphQL", "gRPC", "tRPC", "WebRTC", "When to use which"] },
+    { id: "3d", name: "Project: Real API", subs: ["Auth system (register, login, refresh)", "CRUD with PostgreSQL", "Proper error handling", "Input validation"] }
+  ]},
+  { id: 4, title: "Systems & CLI deep dive", topics: [
+    { id: "4a", name: "How terminals work", subs: ["stdin, stdout, stderr", "ANSI escape codes", "TTY vs pipe detection", "Signals (SIGINT, SIGTERM)"] },
+    { id: "4b", name: "Ink & TUI", subs: ["Ink basics (React for CLI)", "Components, hooks in Ink", "Layout with Flexbox in terminal", "Handling input & key presses"] },
+    { id: "4c", name: "CLI architecture", subs: ["Argument parsing (yargs/commander)", "Config files (~/.config)", "Plugin system design", "Auto-update mechanism"] },
+    { id: "4e", name: "Process control & IPC", subs: ["Child processes (spawn, exec)", "IPC between processes", "Named pipes & Unix sockets"] },
+    { id: "4f", name: "Linux fundamentals", subs: ["The shell & bash scripting", "Filesystem hierarchy & permissions", "Users, groups & sudo", "Package managers (apt/brew)", "systemd & services", "WSL on Windows"] },
+    { id: "4g", name: "Operating system concepts", subs: ["Processes vs threads", "Memory & virtual memory", "Scheduling", "System calls", "How the kernel works"] },
+    { id: "4d", name: "Project: TUI tool with Ink", subs: ["Build something with a real terminal UI", "Navigation between views", "Real data (file system or API)"] }
+  ]},
+  { id: 5, title: "Frontend — React", topics: [
+    { id: "5a", name: "React core", subs: ["JSX & rendering", "useState, useEffect, useRef", "useContext", "useMemo, useCallback", "Custom hooks"] },
+    { id: "5b", name: "State & data", subs: ["Lifting state up", "Fetch + loading/error states", "React Query basics", "Form handling without libraries"] },
+    { id: "5c", name: "Component design", subs: ["Composition over inheritance", "Compound components pattern", "Controlled vs uncontrolled", "Performance optimization"] },
+    { id: "5d", name: "Project: Chat interface", subs: ["Build a chat UI from scratch", "Connect to your Stage 3 API", "Real-time feel with optimistic updates"] }
+  ]},
+  { id: 6, title: "Next.js + Full Stack", topics: [
+    { id: "6a", name: "Next.js core", subs: ["App router vs pages router", "Server components vs client components", "Server actions", "API routes"] },
+    { id: "6b", name: "Full stack patterns", subs: ["Auth end-to-end (NextAuth or custom)", "Database access from server components", "File uploads", "Caching strategies"] },
+    { id: "6c", name: "Deployment", subs: ["Vercel deployment", "Railway for backend/DB", "Environment variables", "Domain & DNS basics"] },
+    { id: "6e", name: "Browser platform & PWA", subs: ["PWA basics (service workers, offline support)", "Web Workers", "Native browser APIs (Notifications, File System Access)"] },
+    { id: "6d", name: "Project: Full stack chat app", subs: ["Make Stage 5 chat app full stack", "Real auth, real DB", "Deploy it live"] }
+  ]},
+  { id: 7, title: "AI/ML — parallel track", topics: [
+    { id: "7a", name: "Foundations", subs: ["Linear algebra essentials (vectors, matrices)", "Calculus basics (derivatives, chain rule)", "Probability & statistics", "NumPy from scratch", "Pandas for data manipulation"] },
+    { id: "7b", name: "Classical ML", subs: ["Linear regression from scratch", "Logistic regression from scratch", "Decision trees & random forests", "SVM intuition", "Evaluation metrics"] },
+    { id: "7c", name: "Neural networks", subs: ["What a neuron does mathematically", "Backpropagation from scratch", "PyTorch basics", "Training loop from scratch", "Andrej Karpathy — makemore series"] },
+    { id: "7d", name: "LLM understanding", subs: ["Transformer architecture", "Attention mechanism", "nanoGPT walkthrough", "Fine-tuning basics", "Prompt engineering depth"] },
+    { id: "7e", name: "Integrating AI", subs: ["Claude API in real backends", "Streaming responses", "Tool use / function calling", "RAG basics", "Building OpenDrill deeper"] }
+  ]},
+  { id: 8, title: "Networking & Systems", topics: [
+    { id: "8a", name: "How internet works", subs: ["TCP/IP stack", "DNS resolution", "HTTP/1.1 vs HTTP/2 vs HTTP/3", "TLS & HTTPS", "CDN & caching"] },
+    { id: "8b", name: "Real-time", subs: ["WebSockets from scratch", "Server-Sent Events (SSE)", "Long polling", "When to use which"] },
+    { id: "8c", name: "System design basics", subs: ["Load balancing", "Message queues (Redis, BullMQ)", "Rate limiting", "Caching (Redis)", "Database sharding basics"] },
+    { id: "8d", name: "Docker & infra", subs: ["Docker basics", "docker-compose", "Environment parity (dev/prod)", "Basic CI/CD with GitHub Actions"] },
+    { id: "8e", name: "Server & ops", subs: ["Reverse proxies (Nginx basics)", "Process managers (PM2)", "SSH & server management basics"] },
+    { id: "8f", name: "Data structures behind real systems", subs: ["B-trees (how databases store data)", "LSM trees", "Consistent hashing", "Skip lists"] },
+    { id: "8g", name: "Cloud (AWS/GCP)", subs: ["Object storage (S3)", "Compute (EC2/VMs)", "IAM & permissions", "Serverless (Lambda/Functions)", "Managed databases"] }
+  ]},
+  { id: 9, title: "Programming language + open source", topics: [
+    { id: "9a", name: "Compiler/interpreter theory", subs: ["Read: Crafting Interpreters (Nystrom)", "Lexing & tokenization", "Parsing & AST", "Tree-walk interpreter", "Bytecode & VMs"] },
+    { id: "9b", name: "Build your language", subs: ["Design the syntax", "Build lexer in TypeScript", "Build parser & AST", "Build evaluator", "Add standard library"] },
+    { id: "9c", name: "Open source depth", subs: ["Read source of 1 tool you use daily", "Make first real contribution", "Understand GitHub Actions internals", "Build a GitHub App", "Maintain your own OSS project"] },
+    { id: "9d", name: "Compilers & build tools", subs: ["How bundlers work (Webpack, Vite internals)", "AST manipulation (Babel plugins)", "Tree shaking & code splitting", "Source maps"] },
+    { id: "9e", name: "Git & GitHub deep", subs: ["Git internals (objects, refs, packfiles)", "Advanced Git (rebase, bisect, reflog, hooks)", "GitHub Actions deep (custom actions, matrix builds)", "GitHub Apps & OAuth Apps", "Webhooks deep"] }
+  ]},
+  { id: 10, title: "Desktop & Native App Dev", topics: [
+    { id: "10a", name: "Electron", subs: ["Electron architecture (main vs renderer)", "Why VS Code & Discord use it", "Building a window app", "Electron strengths & limitations"] },
+    { id: "10b", name: "Tauri", subs: ["Tauri basics (Rust-based, lightweight)", "Why Tauri over Electron", "Rust ↔ frontend bridge", "Tauri commands & APIs"] },
+    { id: "10c", name: "React Native (mobile)", subs: ["React Native fundamentals", "Native modules & components", "Navigation", "Building for iOS & Android"] },
+    { id: "10d", name: "Native app plumbing", subs: ["IPC (inter-process communication)", "System tray", "Native notifications", "Auto-updater", "Packaging & distribution (DMG, EXE, AppImage)"] },
+    { id: "10e", name: "Project: Desktop app", subs: ["Build a desktop version of your big project", "Choose Tauri or Electron", "System tray + notifications", "Package & ship real installers"] }
+  ]},
+  { id: 11, title: "Security", topics: [
+    { id: "11a", name: "OWASP & common attacks", subs: ["OWASP Top 10", "SQL injection", "XSS (cross-site scripting)", "CSRF"] },
+    { id: "11b", name: "Defense & ops security", subs: ["Rate limiting & DDoS basics", "Secrets management (never hardcode keys)", "Penetration testing basics"] },
+    { id: "11c", name: "Auth protocols deep", subs: ["OAuth 2.0 deep", "OpenID Connect", "Token security & rotation"] }
+  ]},
+  { id: 12, title: "Testing, Performance & Quality", topics: [
+    { id: "12a", name: "Testing", subs: ["Unit testing (Vitest/Jest)", "Integration testing", "E2E testing (Playwright)", "TDD mindset", "Testing CLI tools"] },
+    { id: "12b", name: "Performance", subs: ["Profiling Node.js apps", "Memory leaks & heap dumps", "Browser performance (Core Web Vitals, Lighthouse)", "Database query optimization", "Caching strategies deep"] },
+    { id: "12c", name: "Observability & monitoring", subs: ["Metrics (Prometheus/Grafana)", "Distributed tracing", "Error tracking (Sentry)", "Alerting", "Health checks & uptime"] }
+  ]},
+  { id: 13, title: "Rust", topics: [
+    { id: "13a", name: "Rust core", subs: ["Ownership, borrowing & lifetimes", "Memory model without a garbage collector", "Systems programming mindset", "Error handling (Result, Option)", "Cargo & crates"] },
+    { id: "13b", name: "Rust applied", subs: ["Build a CLI in Rust", "Tauri backend in Rust", "Toward a language VM in Rust"] }
+  ]}
+];
+
+const STORAGE_KEY = "parth_roadmap_v1";
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+function save(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+}
+
+let state = load();
+let openStages = {};
+let openTopics = {};
+
+function getSubKey(stageId, topicId, subIdx) { return `${stageId}_${topicId}_${subIdx}`; }
+
+function isSubDone(stageId, topicId, subIdx) { return !!state[getSubKey(stageId, topicId, subIdx)]; }
+
+function toggleSub(stageId, topicId, subIdx) {
+  const k = getSubKey(stageId, topicId, subIdx);
+  state[k] = !state[k];
+  save(state);
+  render();
+}
+
+function toggleAllTopic(stageId, topicId, subs) {
+  const allDone = subs.every((_, i) => isSubDone(stageId, topicId, i));
+  subs.forEach((_, i) => { state[getSubKey(stageId, topicId, i)] = !allDone; });
+  save(state);
+  render();
+}
+
+function globalStats() {
+  let total = 0, done = 0;
+  ROADMAP.forEach(s => s.topics.forEach(t => { total += t.subs.length; t.subs.forEach((_, i) => { if (isSubDone(s.id, t.id, i)) done++; }); }));
+  return { total, done };
+}
+
+function stageStats(stage) {
+  let total = 0, done = 0;
+  stage.topics.forEach(t => { total += t.subs.length; t.subs.forEach((_, i) => { if (isSubDone(stage.id, t.id, i)) done++; }); });
+  return { total, done };
+}
+
+function topicStats(stageId, topic) {
+  let done = topic.subs.filter((_, i) => isSubDone(stageId, topic.id, i)).length;
+  return { total: topic.subs.length, done };
+}
+
+function checkSVG() { return `<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
+
+function render() {
+  const { total, done } = globalStats();
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById("global-fill").style.width = pct + "%";
+  document.getElementById("global-text").textContent = `${done} of ${total} subtopics done`;
+  document.getElementById("global-pct").textContent = pct + "%";
+
+  const root = document.getElementById("stages-root");
+  root.innerHTML = ROADMAP.map(stage => {
+    const ss = stageStats(stage);
+    const sPct = ss.total ? Math.round(ss.done / ss.total * 100) : 0;
+    const isOpen = !!openStages[stage.id];
+    const allDone = ss.done === ss.total;
+
+    const topicsHTML = isOpen ? `<div class="stage-body">${stage.topics.map(topic => {
+      const ts = topicStats(stage.id, topic);
+      const tOpen = !!openTopics[topic.id];
+      const allSubsDone = ts.done === ts.total;
+      const someSubsDone = ts.done > 0 && ts.done < ts.total;
+      const checkClass = allSubsDone ? "checked" : someSubsDone ? "partial" : "";
+
+      const subsHTML = tOpen ? `<div class="subtopics">${topic.subs.map((sub, i) => {
+        const done = isSubDone(stage.id, topic.id, i);
+        return `<div class="subtopic" onclick="toggleSub(${stage.id}, '${topic.id}', ${i})">
+          <div class="sub-check ${done ? 'checked' : ''}">${done ? checkSVG() : ''}</div>
+          <span class="sub-label ${done ? 'checked' : ''}">${sub}</span>
+        </div>`;
+      }).join("")}</div>` : "";
+
+      return `<div class="topic">
+        <div class="topic-header" onclick="toggleTopic('${topic.id}')">
+          <div class="topic-check ${checkClass}" onclick="event.stopPropagation(); toggleAllTopic(${stage.id}, '${topic.id}', ${JSON.stringify(topic.subs)})">${allSubsDone ? checkSVG() : ''}</div>
+          <span class="topic-name">${topic.name}</span>
+          <span class="topic-count">${ts.done}/${ts.total}</span>
+          <span class="chevron ${tOpen ? 'open' : ''}">▾</span>
+        </div>
+        ${subsHTML}
+      </div>`;
+    }).join("")}</div>` : "";
+
+    return `<div class="stage-card">
+      <div class="stage-header" onclick="toggleStage(${stage.id})">
+        <span class="stage-badge ${allDone ? 'done' : ''}">Stage ${stage.id}</span>
+        <span class="stage-title">${stage.title}</span>
+        <span class="stage-progress-text">${sPct}%</span>
+        <div class="stage-mini-bar"><div class="stage-mini-fill" style="width:${sPct}%"></div></div>
+        <span class="chevron ${isOpen ? 'open' : ''}">▾</span>
+      </div>
+      ${topicsHTML}
+    </div>`;
+  }).join("");
+}
+
+function toggleStage(id) { openStages[id] = !openStages[id]; render(); }
+function toggleTopic(id) { openTopics[id] = !openTopics[id]; render(); }
+
+render();
+</script>
+</body>
+</html>
