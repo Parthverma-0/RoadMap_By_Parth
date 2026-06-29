@@ -173,94 +173,82 @@
 </div>
 
 <script>
+
 const ROADMAP = [
-  { id: 1, title: "JavaScript - the real thing", topics: [
-    { id: "1a", name: "Core language", subs: ["Variables, types, scope", "Closures & lexical scope", "Prototypes & inheritance", "ES6+ features (destructuring, spread, optional chaining)", "Modules (import/export, CommonJS)"] },
-    { id: "1b", name: "Async JS", subs: ["Callbacks & callback hell", "Promises", "async/await", "Event loop & call stack", "Error handling in async code"] },
-    { id: "1c", name: "Node.js basics", subs: ["How Node works (V8, libuv)", "File system (fs module)", "HTTP module from scratch", "Streams & buffers", "Process & environment"] },
-    { id: "1d", name: "Project: CLI tool", subs: ["Build a real CLI in pure Node.js", "Argument parsing manually", "Read/write files", "Make it do something you actually use"] }
-  ]},
-  { id: 2, title: "TypeScript", topics: [
-    { id: "2a", name: "Type system", subs: ["Basic types, interfaces, type aliases", "Union, intersection, literal types", "Generics", "Utility types (Partial, Pick, Omit etc.)", "Type narrowing & guards"] },
-    { id: "2b", name: "TypeScript in practice", subs: ["tsconfig.json deep dive", "Compilation & declaration files", "TS with Node.js", "Strict mode"] },
-    { id: "2c", name: "Project: Rewrite CLI in TS", subs: ["Convert Stage 1 CLI to TypeScript", "Add proper types everywhere", "Handle errors with typed throws"] }
-  ]},
-  { id: 3, title: "Backend — Node.js + Express", topics: [
-    { id: "3a", name: "HTTP & REST", subs: ["HTTP methods, status codes, headers", "REST principles", "Building routes in Express", "Middleware pattern", "Error handling middleware"] },
-    { id: "3b", name: "Auth", subs: ["JWT from scratch", "Sessions & cookies", "bcrypt for passwords", "Refresh tokens", "Role-based access"] },
-    { id: "3c", name: "PostgreSQL", subs: ["SQL fundamentals (SELECT, JOIN, GROUP BY)", "Schema design & normalization", "Indexes & query optimization", "Transactions", "pg library in Node.js"] },
-    { id: "3e", name: "Realtime, jobs & logging", subs: ["WebSockets server (ws library)", "Background jobs & cron", "Structured logs & log levels"] },
-    { id: "3f", name: "Databases beyond Postgres", subs: ["ORMs (Prisma/Drizzle)", "Database migrations", "NoSQL (MongoDB)", "Redis as a primary store", "Choosing the right database"] },
-    { id: "3g", name: "API paradigms beyond REST", subs: ["GraphQL", "gRPC", "tRPC", "WebRTC", "When to use which"] },
-    { id: "3d", name: "Project: Real API", subs: ["Auth system (register, login, refresh)", "CRUD with PostgreSQL", "Proper error handling", "Input validation"] }
-  ]},
-  { id: 4, title: "Systems & CLI deep dive", topics: [
-    { id: "4a", name: "How terminals work", subs: ["stdin, stdout, stderr", "ANSI escape codes", "TTY vs pipe detection", "Signals (SIGINT, SIGTERM)"] },
-    { id: "4b", name: "Ink & TUI", subs: ["Ink basics (React for CLI)", "Components, hooks in Ink", "Layout with Flexbox in terminal", "Handling input & key presses"] },
-    { id: "4c", name: "CLI architecture", subs: ["Argument parsing (yargs/commander)", "Config files (~/.config)", "Plugin system design", "Auto-update mechanism"] },
-    { id: "4e", name: "Process control & IPC", subs: ["Child processes (spawn, exec)", "IPC between processes", "Named pipes & Unix sockets"] },
-    { id: "4f", name: "Linux fundamentals", subs: ["The shell & bash scripting", "Filesystem hierarchy & permissions", "Users, groups & sudo", "Package managers (apt/brew)", "systemd & services", "WSL on Windows"] },
-    { id: "4g", name: "Operating system concepts", subs: ["Processes vs threads", "Memory & virtual memory", "Scheduling", "System calls", "How the kernel works"] },
-    { id: "4d", name: "Project: TUI tool with Ink", subs: ["Build something with a real terminal UI", "Navigation between views", "Real data (file system or API)"] }
-  ]},
-  { id: 5, title: "Frontend — React", topics: [
-    { id: "5a", name: "React core", subs: ["JSX & rendering", "useState, useEffect, useRef", "useContext", "useMemo, useCallback", "Custom hooks"] },
-    { id: "5b", name: "State & data", subs: ["Lifting state up", "Fetch + loading/error states", "React Query basics", "Form handling without libraries"] },
-    { id: "5c", name: "Component design", subs: ["Composition over inheritance", "Compound components pattern", "Controlled vs uncontrolled", "Performance optimization"] },
-    { id: "5d", name: "Project: Chat interface", subs: ["Build a chat UI from scratch", "Connect to your Stage 3 API", "Real-time feel with optimistic updates"] }
-  ]},
-  { id: 6, title: "Next.js + Full Stack", topics: [
-    { id: "6a", name: "Next.js core", subs: ["App router vs pages router", "Server components vs client components", "Server actions", "API routes"] },
-    { id: "6b", name: "Full stack patterns", subs: ["Auth end-to-end (NextAuth or custom)", "Database access from server components", "File uploads", "Caching strategies"] },
-    { id: "6c", name: "Deployment", subs: ["Vercel deployment", "Railway for backend/DB", "Environment variables", "Domain & DNS basics"] },
-    { id: "6e", name: "Browser platform & PWA", subs: ["PWA basics (service workers, offline support)", "Web Workers", "Native browser APIs (Notifications, File System Access)"] },
-    { id: "6d", name: "Project: Full stack chat app", subs: ["Make Stage 5 chat app full stack", "Real auth, real DB", "Deploy it live"] }
-  ]},
-  { id: 7, title: "AI/ML — parallel track", topics: [
-    { id: "7a", name: "Foundations", subs: ["Linear algebra essentials (vectors, matrices)", "Calculus basics (derivatives, chain rule)", "Probability & statistics", "NumPy from scratch", "Pandas for data manipulation"] },
-    { id: "7b", name: "Classical ML", subs: ["Linear regression from scratch", "Logistic regression from scratch", "Decision trees & random forests", "SVM intuition", "Evaluation metrics"] },
-    { id: "7c", name: "Neural networks", subs: ["What a neuron does mathematically", "Backpropagation from scratch", "PyTorch basics", "Training loop from scratch", "Andrej Karpathy — makemore series"] },
-    { id: "7d", name: "LLM understanding", subs: ["Transformer architecture", "Attention mechanism", "nanoGPT walkthrough", "Fine-tuning basics", "Prompt engineering depth"] },
-    { id: "7e", name: "Integrating AI", subs: ["Claude API in real backends", "Streaming responses", "Tool use / function calling", "RAG basics", "Building OpenDrill deeper"] }
-  ]},
-  { id: 8, title: "Networking & Systems", topics: [
-    { id: "8a", name: "How internet works", subs: ["TCP/IP stack", "DNS resolution", "HTTP/1.1 vs HTTP/2 vs HTTP/3", "TLS & HTTPS", "CDN & caching"] },
-    { id: "8b", name: "Real-time", subs: ["WebSockets from scratch", "Server-Sent Events (SSE)", "Long polling", "When to use which"] },
-    { id: "8c", name: "System design basics", subs: ["Load balancing", "Message queues (Redis, BullMQ)", "Rate limiting", "Caching (Redis)", "Database sharding basics"] },
-    { id: "8d", name: "Docker & infra", subs: ["Docker basics", "docker-compose", "Environment parity (dev/prod)", "Basic CI/CD with GitHub Actions"] },
-    { id: "8e", name: "Server & ops", subs: ["Reverse proxies (Nginx basics)", "Process managers (PM2)", "SSH & server management basics"] },
-    { id: "8f", name: "Data structures behind real systems", subs: ["B-trees (how databases store data)", "LSM trees", "Consistent hashing", "Skip lists"] },
-    { id: "8g", name: "Cloud (AWS/GCP)", subs: ["Object storage (S3)", "Compute (EC2/VMs)", "IAM & permissions", "Serverless (Lambda/Functions)", "Managed databases"] }
-  ]},
-  { id: 9, title: "Programming language + open source", topics: [
-    { id: "9a", name: "Compiler/interpreter theory", subs: ["Read: Crafting Interpreters (Nystrom)", "Lexing & tokenization", "Parsing & AST", "Tree-walk interpreter", "Bytecode & VMs"] },
-    { id: "9b", name: "Build your language", subs: ["Design the syntax", "Build lexer in TypeScript", "Build parser & AST", "Build evaluator", "Add standard library"] },
-    { id: "9c", name: "Open source depth", subs: ["Read source of 1 tool you use daily", "Make first real contribution", "Understand GitHub Actions internals", "Build a GitHub App", "Maintain your own OSS project"] },
-    { id: "9d", name: "Compilers & build tools", subs: ["How bundlers work (Webpack, Vite internals)", "AST manipulation (Babel plugins)", "Tree shaking & code splitting", "Source maps"] },
-    { id: "9e", name: "Git & GitHub deep", subs: ["Git internals (objects, refs, packfiles)", "Advanced Git (rebase, bisect, reflog, hooks)", "GitHub Actions deep (custom actions, matrix builds)", "GitHub Apps & OAuth Apps", "Webhooks deep"] }
-  ]},
-  { id: 10, title: "Desktop & Native App Dev", topics: [
-    { id: "10a", name: "Electron", subs: ["Electron architecture (main vs renderer)", "Why VS Code & Discord use it", "Building a window app", "Electron strengths & limitations"] },
-    { id: "10b", name: "Tauri", subs: ["Tauri basics (Rust-based, lightweight)", "Why Tauri over Electron", "Rust ↔ frontend bridge", "Tauri commands & APIs"] },
-    { id: "10c", name: "React Native (mobile)", subs: ["React Native fundamentals", "Native modules & components", "Navigation", "Building for iOS & Android"] },
-    { id: "10d", name: "Native app plumbing", subs: ["IPC (inter-process communication)", "System tray", "Native notifications", "Auto-updater", "Packaging & distribution (DMG, EXE, AppImage)"] },
-    { id: "10e", name: "Project: Desktop app", subs: ["Build a desktop version of your big project", "Choose Tauri or Electron", "System tray + notifications", "Package & ship real installers"] }
-  ]},
-  { id: 11, title: "Security", topics: [
-    { id: "11a", name: "OWASP & common attacks", subs: ["OWASP Top 10", "SQL injection", "XSS (cross-site scripting)", "CSRF"] },
-    { id: "11b", name: "Defense & ops security", subs: ["Rate limiting & DDoS basics", "Secrets management (never hardcode keys)", "Penetration testing basics"] },
-    { id: "11c", name: "Auth protocols deep", subs: ["OAuth 2.0 deep", "OpenID Connect", "Token security & rotation"] }
-  ]},
-  { id: 12, title: "Testing, Performance & Quality", topics: [
-    { id: "12a", name: "Testing", subs: ["Unit testing (Vitest/Jest)", "Integration testing", "E2E testing (Playwright)", "TDD mindset", "Testing CLI tools"] },
-    { id: "12b", name: "Performance", subs: ["Profiling Node.js apps", "Memory leaks & heap dumps", "Browser performance (Core Web Vitals, Lighthouse)", "Database query optimization", "Caching strategies deep"] },
-    { id: "12c", name: "Observability & monitoring", subs: ["Metrics (Prometheus/Grafana)", "Distributed tracing", "Error tracking (Sentry)", "Alerting", "Health checks & uptime"] }
-  ]},
-  { id: 13, title: "Rust", topics: [
-    { id: "13a", name: "Rust core", subs: ["Ownership, borrowing & lifetimes", "Memory model without a garbage collector", "Systems programming mindset", "Error handling (Result, Option)", "Cargo & crates"] },
-    { id: "13b", name: "Rust applied", subs: ["Build a CLI in Rust", "Tauri backend in Rust", "Toward a language VM in Rust"] }
-  ]}
+{
+id:1,title:"Programming Fundamentals",topics:[
+{id:"1a",name:"Programming Basics",subs:["Choose Java/C++/Python","Variables & Data Types","Operators","Loops","Functions"]},
+{id:"1b",name:"OOP",subs:["Classes & Objects","Inheritance","Polymorphism","Abstraction","Encapsulation"]},
+{id:"1c",name:"Git & GitHub",subs:["Git Basics","Branches","Pull Requests","GitHub Workflow"]},
+{id:"1d",name:"Projects",subs:["Calculator","Number Guessing Game","Bank Management System"]}
+]},
+{
+id:2,title:"HTML & CSS",topics:[
+{id:"2a",name:"HTML",subs:["Semantic HTML","Forms","Tables","Accessibility"]},
+{id:"2b",name:"CSS",subs:["Selectors","Flexbox","Grid","Animations","Responsive Design"]},
+{id:"2c",name:"Tailwind CSS",subs:["Utility Classes","Responsive Utilities","Components"]},
+{id:"2d",name:"Projects",subs:["Portfolio Website","Netflix Clone","Spotify Clone","Apple Landing Page","Linktree Clone"]}
+]},
+{
+id:3,title:"JavaScript",topics:[
+{id:"3a",name:"Core JavaScript",subs:["ES6+","DOM","Events","Modules","Fetch API"]},
+{id:"3b",name:"Async JS",subs:["Promises","Async/Await","Event Loop"]},
+{id:"3c",name:"Projects",subs:["Weather App","Expense Tracker","Quiz App","Kanban Board","Markdown Editor"]}
+]},
+{
+id:4,title:"React",topics:[
+{id:"4a",name:"React Core",subs:["Components","Hooks","Routing","Context API"]},
+{id:"4b",name:"State Management",subs:["React Query","Forms","Performance"]},
+{id:"4c",name:"Projects",subs:["Notes App","Movie App","Habit Tracker","AI Chat UI","Trello Clone"]}
+]},
+{
+id:5,title:"Backend Development",topics:[
+{id:"5a",name:"Node.js & Express",subs:["REST APIs","Middleware","Authentication","JWT"]},
+{id:"5b",name:"Databases",subs:["PostgreSQL","Prisma","Redis","MongoDB"]},
+{id:"5c",name:"Projects",subs:["URL Shortener","Blog API","Expense Tracker API","Chat Backend"]}
+]},
+{
+id:6,title:"Full Stack Development",topics:[
+{id:"6a",name:"Next.js",subs:["App Router","Server Components","Deployment"]},
+{id:"6b",name:"Projects",subs:["E-Commerce","LMS","Social Media App","AI SaaS","OpenDrill Style Project"]}
+]},
+{
+id:7,title:"DSA",topics:[
+{id:"7a",name:"Core Topics",subs:["Arrays","Strings","HashMap","Two Pointers","Sliding Window","Binary Search","Stack","Queue","Linked List","Trees","Heap","Graphs","Dynamic Programming"]},
+{id:"7b",name:"Project",subs:["DSA Visualizer"]}
+]},
+{
+id:8,title:"AI / ML",topics:[
+{id:"8a",name:"Foundations",subs:["Python","NumPy","Pandas","Linear Algebra","Probability"]},
+{id:"8b",name:"Machine Learning",subs:["Regression","Classification","Neural Networks","PyTorch"]},
+{id:"8c",name:"Projects",subs:["Resume Analyzer","Chatbot","PDF QA","AI Interviewer","AI Notes Generator"]}
+]},
+{
+id:9,title:"Cloud & DevOps",topics:[
+{id:"9a",name:"Cloud",subs:["Docker","CI/CD","GitHub Actions","AWS/GCP","Deployment"]},
+{id:"9b",name:"Projects",subs:["Deploy Every Project","Dockerize Apps"]}
+]},
+{
+id:10,title:"System Design",topics:[
+{id:"10a",name:"Concepts",subs:["Caching","Load Balancer","Queues","Databases","Scaling"]},
+{id:"10b",name:"Practice",subs:["Design WhatsApp","Design Instagram","Design YouTube","Design Uber"]}
+]},
+{
+id:11,title:"Open Source",topics:[
+{id:"11a",name:"GitHub",subs:["Read Source Code","First PR","Maintain a Repo","Build GitHub App"]}
+]},
+{
+id:12,title:"Mobile & Desktop",topics:[
+{id:"12a",name:"React Native",subs:["Navigation","Native Modules","Deployment"]},
+{id:"12b",name:"Desktop",subs:["Electron","Tauri"]},
+{id:"12c",name:"Project",subs:["Desktop Version of Your Best App"]}
+]},
+{
+id:13,title:"Advanced Topics",topics:[
+{id:"13a",name:"Explore",subs:["Rust","Compilers","System Internals","Terminal Tools","Language Design"]}
+]}
 ];
+
 
 const STORAGE_KEY = "parth_roadmap_v1";
 
